@@ -19,16 +19,28 @@ jobs:
       - name: Set up cross-compilation environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-linux-gnueabihf make zlib1g zlib1g-dev
+          sudo apt-get install -y gcc-arm-linux-gnueabihf make
+
+      - name: Download and build zlib
+        run: |
+          wget https://zlib.net/zlib-1.2.13.tar.gz
+          tar xzf zlib-1.2.13.tar.gz
+          cd zlib-1.2.13
+          CC=arm-linux-gnueabihf-gcc CFLAGS="-O2" ./configure --prefix=$GITHUB_WORKSPACE/zlib-arm
+          make
+          make install
 
       - name: Download Dropbear source
         run: |
-          wget https://github.com/mkj/dropbear/archive/refs/tags/DROPBEAR_2024.85.tar.gz
-          tar zxf DROPBEAR_2024.85.tar.gz
+          wget https://matt.ucc.asn.au/dropbear/dropbear-2024.79.tar.bz2
+          tar xjf dropbear-2024.79.tar.bz2
 
       - name: Build Dropbear
         run: |
-          cd dropbear-DROPBEAR_2024.85
+          cd dropbear-2024.79
+          export PATH=$GITHUB_WORKSPACE/zlib-arm/bin:$PATH
+          export CFLAGS="-I$GITHUB_WORKSPACE/zlib-arm/include"
+          export LDFLAGS="-L$GITHUB_WORKSPACE/zlib-arm/lib"
           ./configure --host=arm-linux-gnueabihf --prefix=/usr/local
           make
           make install DESTDIR=$GITHUB_WORKSPACE/dropbear-arm
