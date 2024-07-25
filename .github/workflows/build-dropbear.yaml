@@ -32,12 +32,12 @@ jobs:
 
       - name: Download Dropbear source
         run: |
-          wget https://matt.ucc.asn.au/dropbear/dropbear-2024.79.tar.bz2
-          tar xjf dropbear-2024.79.tar.bz2
+          wget https://matt.ucc.asn.au/dropbear/dropbear-2024.85.tar.bz2
+          tar xjf dropbear-2024.85.tar.bz2
 
       - name: Build Dropbear
         run: |
-          cd dropbear-2024.79
+          cd dropbear-2024.85
           export PATH=$GITHUB_WORKSPACE/zlib-arm/bin:$PATH
           export CFLAGS="-I$GITHUB_WORKSPACE/zlib-arm/include"
           export LDFLAGS="-L$GITHUB_WORKSPACE/zlib-arm/lib"
