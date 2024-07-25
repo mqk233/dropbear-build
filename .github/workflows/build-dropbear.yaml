@@ -59,8 +59,10 @@ jobs:
           echo "-------------"
           ls -al $GITHUB_WORKSPACE/dropbear-arm
           echo "-------------"
+          ls -al $GITHUB_WORKSPACE/dropbear-arm/usr/local/bin
+          ls -al $GITHUB_WORKSPACE/dropbear-arm/usr/local/sbin
+          ls -al $GITHUB_WORKSPACE/dropbear-arm/usr/local/share
           echo "-------------"
-          ls -al $GITHUB_WORKSPACE/dropbear-arm/usr/local
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
