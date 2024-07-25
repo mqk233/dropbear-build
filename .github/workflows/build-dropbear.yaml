@@ -57,10 +57,10 @@ jobs:
 
       - name: Compress build artifacts
         run: |
-          tar czf $GITHUB_WORKSPACE/dropbear-arm.tar.gz -C $GITHUB_WORKSPACE dropbear-arm
+          tar -zcvf archive.tar.gz $GITHUB_WORKSPACE/dropbear-arm
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: dropbear-arm
-          path: $GITHUB_WORKSPACE/dropbear-arm.tar.gz
+          name: archive.tar.gz
+          path: $GITHUB_WORKSPACE/archive.tar.gz
