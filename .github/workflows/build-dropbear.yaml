@@ -54,18 +54,14 @@ jobs:
           ./configure --host=arm-linux-gnueabihf --prefix=/usr/local
           make
           make install DESTDIR=$GITHUB_WORKSPACE/dropbear-arm
-          echo "-------------"
-          ls -al $GITHUB_WORKSPACE
-          echo "-------------"
-          ls -al $GITHUB_WORKSPACE/dropbear-arm
-          echo "-------------"
-          ls -al $GITHUB_WORKSPACE/dropbear-arm/usr/local/bin
-          ls -al $GITHUB_WORKSPACE/dropbear-arm/usr/local/sbin
-          ls -al $GITHUB_WORKSPACE/dropbear-arm/usr/local/share
-          echo "-------------"
+
+      - name: Compress build artifacts
+        run: |
+          cd $GITHUB_WORKSPACE
+          tar czf dropbear-arm.tar.gz dropbear-arm
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: dropbear-arm
-          path: $GITHUB_WORKSPACE/dropbear-arm
+          path: $GITHUB_WORKSPACE/dropbear-arm.tar.gz
