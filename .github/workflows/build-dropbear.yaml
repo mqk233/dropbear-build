@@ -36,7 +36,7 @@ jobs:
           tar xzf v4.4.36.tar.gz
           cd libxcrypt-4.4.36
           ./autogen.sh
-          CC=arm-linux-gnueabihf-gcc CFLAGS="-O2" ./configure --prefix=$GITHUB_WORKSPACE/libxcrypt-arm
+          CC=arm-linux-gnueabihf-gcc CFLAGS="-O2" ./configure --host=arm-linux-gnueabihf --prefix=/usr/local
           make
           make install
 
