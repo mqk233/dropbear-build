@@ -53,12 +53,14 @@ jobs:
           export LDFLAGS="-L$GITHUB_WORKSPACE/zlib-arm/lib -L$GITHUB_WORKSPACE/libxcrypt-arm/lib"
           ./configure --host=arm-linux-gnueabihf --prefix=/usr/local
           make
-          make install DESTDIR=$GITHUB_WORKSPACE
+          make install DESTDIR=$GITHUB_WORKSPACE/dropbear-arm
           echo "-------------"
           ls -al $GITHUB_WORKSPACE
           echo "-------------"
           ls -al $GITHUB_WORKSPACE/dropbear-arm
           echo "-------------"
+          echo "-------------"
+          ls -al $GITHUB_WORKSPACE/dropbear-arm/usr/local
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
