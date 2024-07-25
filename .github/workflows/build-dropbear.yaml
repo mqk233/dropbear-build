@@ -54,6 +54,9 @@ jobs:
           ./configure --host=arm-linux-gnueabihf --prefix=/usr/local
           make
           make install DESTDIR=$GITHUB_WORKSPACE/dropbear-arm
+          ls -al $GITHUB_WORKSPACE
+          echo "-------------"
+          ls -al $GITHUB_WORKSPACE/dropbear-arm
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
