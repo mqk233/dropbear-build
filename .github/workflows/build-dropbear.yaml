@@ -48,9 +48,9 @@ jobs:
       - name: Build Dropbear
         run: |
           cd dropbear-2024.85
-          export PATH=$GITHUB_WORKSPACE/zlib-arm/bin:$PATH
-          export CFLAGS="-I$GITHUB_WORKSPACE/zlib-arm/include"
-          export LDFLAGS="-L$GITHUB_WORKSPACE/zlib-arm/lib"
+          export PATH=$GITHUB_WORKSPACE/zlib-arm/bin:$GITHUB_WORKSPACE/libxcrypt-arm/bin:$PATH
+          export CFLAGS="-I$GITHUB_WORKSPACE/zlib-arm/include -I$GITHUB_WORKSPACE/libxcrypt-arm/include"
+          export LDFLAGS="-L$GITHUB_WORKSPACE/zlib-arm/lib -L$GITHUB_WORKSPACE/libxcrypt-arm/lib"
           ./configure --host=arm-linux-gnueabihf --prefix=/usr/local
           make
           make install DESTDIR=$GITHUB_WORKSPACE/dropbear-arm
