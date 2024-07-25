@@ -24,7 +24,7 @@ jobs:
       - name: Download Dropbear source
         run: |
           wget https://github.com/mkj/dropbear/archive/refs/tags/DROPBEAR_2024.85.tar.gz
-          tar xjf DROPBEAR_2024.85.tar.gz
+          tar zxf DROPBEAR_2024.85.tar.gz
 
       - name: Build Dropbear
         run: |
