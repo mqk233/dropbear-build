@@ -23,12 +23,12 @@ jobs:
 
       - name: Download Dropbear source
         run: |
-          wget https://matt.ucc.asn.au/dropbear/dropbear-2024.79.tar.bz2
-          tar xjf dropbear-2024.79.tar.bz2
+          wget https://github.com/mkj/dropbear/archive/refs/tags/DROPBEAR_2024.85.tar.gz
+          tar xjf DROPBEAR_2024.85.tar.gz
 
       - name: Build Dropbear
         run: |
-          cd dropbear-2024.79
+          cd dropbear-DROPBEAR_2024.85
           ./configure --host=arm-linux-gnueabihf --prefix=/usr/local
           make
           make install DESTDIR=$GITHUB_WORKSPACE/dropbear-arm
