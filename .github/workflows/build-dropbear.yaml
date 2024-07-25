@@ -34,10 +34,8 @@ jobs:
         run: |
           wget https://github.com/besser82/libxcrypt/archive/refs/tags/v4.4.36.tar.gz
           tar xzf v4.4.36.tar.gz
-          ls -al
           cd libxcrypt-4.4.36
-          echo "---------"
-          ls -al
+          ./autogen.sh
           CC=arm-linux-gnueabihf-gcc CFLAGS="-O2" ./configure --prefix=$GITHUB_WORKSPACE/libxcrypt-arm
           make
           make install
