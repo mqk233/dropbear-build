@@ -1,0 +1,40 @@
+name: Build Dropbear for ARMv7
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up cross-compilation environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-linux-gnueabihf make
+
+      - name: Download Dropbear source
+        run: |
+          wget https://matt.ucc.asn.au/dropbear/dropbear-2024.79.tar.bz2
+          tar xjf dropbear-2024.79.tar.bz2
+
+      - name: Build Dropbear
+        run: |
+          cd dropbear-2024.79
+          ./configure --host=arm-linux-gnueabihf --prefix=/usr/local
+          make
+          make install DESTDIR=$GITHUB_WORKSPACE/dropbear-arm
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dropbear-arm
+          path: $GITHUB_WORKSPACE/dropbear-arm
