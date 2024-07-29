@@ -16,13 +16,8 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace arm32v7/ubuntu:22.04 /bin/bash -c "
             apt-get update &&
             apt-get upgrade -y &&
-            apt-get install -y git build-essential autoconf automake pkg-config uuid-dev &&
-            git clone git://git.infradead.org/mtd-utils.git &&
-            cd mtd-utils &&
-            ./autogen.sh &&
-            CFLAGS=\"-static\" LDFLAGS=\"-static\" ./configure &&
-            make misc-utils &&
-            make DESTDIR=/workspace install
+            apt-get install -y squashfs-tools &&
+            whereis mksquashfs
           "
       - name: Upload mtd-utils
         uses: actions/upload-artifact@v4
