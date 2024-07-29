@@ -19,28 +19,20 @@ jobs:
       with:
         platforms: arm
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Install dependencies
+    - name: Build mtd-utils in ARMv7 container
       run: |
-        sudo dpkg --add-architecture armhf
-        sudo apt-get update || sudo apt-get update --allow-releaseinfo-change
-        sudo apt-get install -y build-essential gcc-arm-linux-gnueabihf libtool autoconf automake zlib1g-dev:armhf || \
-          (sudo apt-get update && sudo apt-get install -y build-essential gcc-arm-linux-gnueabihf libtool autoconf automake zlib1g-dev:armhf)
-
-    - name: Clone mtd-utils repository
-      run: git clone git://git.infradead.org/mtd-utils.git
-
-    - name: Build mtd-utils
-      run: |
-        cd mtd-utils
-        ./autogen.sh
-        ./configure --host=arm-linux-gnueabihf
-        make
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace arm32v7/ubuntu:20.04 /bin/bash -c "
+          apt-get update &&
+          apt-get install -y build-essential libtool autoconf automake zlib1g-dev git &&
+          git clone git://git.infradead.org/mtd-utils.git &&
+          cd mtd-utils &&
+          ./autogen.sh &&
+          ./configure &&
+          make
+        "
 
     - name: Upload binaries
       uses: actions/upload-artifact@v2
       with:
         name: mtd-utils-binaries
-        path: mtd-utils/mtd-utils
+        path: mtd-utils
