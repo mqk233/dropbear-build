@@ -13,10 +13,10 @@ jobs:
           platforms: arm
       - name: Build mtd-utils
         run: |
-          docker run --rm -e -v ${{ github.workspace }}:/workspace -w /workspace arm32v7/ubuntu:22.04 /bin/bash -c "
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace arm32v7/ubuntu:22.04 /bin/bash -c "
             apt update &&
             apt upgrade &&
-            apt install -y autoconf automake pkg-config
+            apt install -y autoconf automake pkg-config &&
             git clone git://git.infradead.org/mtd-utils.git &&
             cd mtd-utils &&
             ./autogen.sh &&
