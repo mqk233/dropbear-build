@@ -20,7 +20,7 @@ jobs:
             git clone git://git.infradead.org/mtd-utils.git &&
             cd mtd-utils &&
             ./autogen.sh &&
-            ./configure &&
+            CFLAGS=\"-static\" LDFLAGS=\"-static\" ./configure &&
             make misc-utils &&
             make DESTDIR=/workspace install
           "
