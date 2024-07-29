@@ -16,7 +16,7 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace arm32v7/ubuntu:22.04 /bin/bash -c "
             apt-get update &&
             apt-get upgrade -y &&
-            apt-get install -y git build-essential autoconf automake pkg-config uuid-dev zlib1g-dev &&
+            apt-get install -y git build-essential autoconf automake pkg-config uuid-dev zlib1g-dev liblzo2-dev &&
             git clone git://git.infradead.org/mtd-utils.git &&
             cd mtd-utils &&
             ./autogen.sh &&
