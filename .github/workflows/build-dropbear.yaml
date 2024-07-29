@@ -23,7 +23,7 @@ jobs:
       run: |
         docker run --rm -e DEBIAN_FRONTEND=noninteractive -v ${{ github.workspace }}:/workspace -w /workspace arm32v7/ubuntu /bin/bash -c "
           apt-get update &&
-          apt-get install -y build-essential libtool autoconf automake zlib1g-dev pkg-config git &&
+          apt-get install -y tzdata build-essential libtool autoconf automake zlib1g-dev pkg-config uuid-dev git &&
           git clone git://git.infradead.org/mtd-utils.git &&
           cd mtd-utils &&
           ./autogen.sh &&
