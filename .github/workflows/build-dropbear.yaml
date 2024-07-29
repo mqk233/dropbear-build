@@ -1,66 +1,44 @@
-name: Build Dropbear for ARMv7
+name: Build mtd-utils for ARMv7
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up cross-compilation environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-arm-linux-gnueabihf make
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+      with:
+        platforms: arm
 
-      - name: Download and build zlib
-        run: |
-          wget https://zlib.net/zlib-1.3.1.tar.gz
-          tar xzf zlib-1.3.1.tar.gz
-          cd zlib-1.3.1
-          CC=arm-linux-gnueabihf-gcc CFLAGS="-O2" ./configure --prefix=$GITHUB_WORKSPACE/zlib-arm
-          make
-          make install
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-      - name: Download and build libxcrypt
-        run: |
-          wget https://github.com/besser82/libxcrypt/archive/refs/tags/v4.4.36.tar.gz
-          tar xzf v4.4.36.tar.gz
-          cd libxcrypt-4.4.36
-          ./autogen.sh
-          CC=arm-linux-gnueabihf-gcc CFLAGS="-O2" ./configure --host=arm-linux-gnueabihf --prefix=$GITHUB_WORKSPACE/libxcrypt-arm
-          make
-          make install
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential gcc-arm-linux-gnueabihf libtool autoconf automake
 
-      - name: Download Dropbear source
-        run: |
-          wget https://matt.ucc.asn.au/dropbear/dropbear-2024.85.tar.bz2
-          tar xjf dropbear-2024.85.tar.bz2
+    - name: Clone mtd-utils repository
+      run: git clone https://github.com/mtd-utils/mtd-utils.git
 
-      - name: Build Dropbear
-        run: |
-          cd dropbear-2024.85
-          export PATH=$GITHUB_WORKSPACE/zlib-arm/bin:$GITHUB_WORKSPACE/libxcrypt-arm/bin:$PATH
-          export CFLAGS="-I$GITHUB_WORKSPACE/zlib-arm/include -I$GITHUB_WORKSPACE/libxcrypt-arm/include"
-          export LDFLAGS="-L$GITHUB_WORKSPACE/zlib-arm/lib -L$GITHUB_WORKSPACE/libxcrypt-arm/lib"
-          ./configure --disable-zlib --disable-syslog --enable-static --host=arm-linux-gnueabihf
-          make
-          make install DESTDIR=$GITHUB_WORKSPACE/dropbear-arm
+    - name: Build mtd-utils
+      run: |
+        cd mtd-utils
+        ./autogen.sh
+        ./configure --host=arm-linux-gnueabihf
+        make
 
-      - name: Compress build artifacts
-        run: |
-          tar -zcvf dropbear-arm.tar.gz $GITHUB_WORKSPACE/dropbear-arm
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dropbear-arm.tar.gz
-          path: /home/runner/work/dropbear-build/dropbear-build/dropbear-arm.tar.gz
+    - name: Upload binaries
+      uses: actions/upload-artifact@v2
+      with:
+        name: mtd-utils-binaries
+        path: mtd-utils/mtd-utils
