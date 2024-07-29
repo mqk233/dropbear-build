@@ -17,7 +17,8 @@ jobs:
             apt-get update &&
             apt-get upgrade -y &&
             apt-get install -y mtd-utils &&
-            whereis flashcp
+            whereis flashcp &&
+            cp /usr/sbin/flashcp /workspace
           "
       - name: Upload mtd-utils
         uses: actions/upload-artifact@v4
