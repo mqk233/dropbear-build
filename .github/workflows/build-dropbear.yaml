@@ -20,8 +20,7 @@ jobs:
             git clone git://git.infradead.org/mtd-utils.git &&
             cd mtd-utils &&
             ./autogen.sh &&
-            ./configure --help &&
-            CFLAGS=\"-static\" LDFLAGS=\"-static\" CFLAGS=\"-g0\" CXXFLAGS=\"-g0\" ./configure &&
+            CFLAGS=\"-static\" LDFLAGS=\"-static\" CFLAGS=\"-g0\" CXXFLAGS=\"-g0\" ./configure --with-zlib --with-xattr --with-lzo --with-zstd --with-selinux --with-crypto &&
             make misc-utils &&
             make DESTDIR=/workspace install
           "
