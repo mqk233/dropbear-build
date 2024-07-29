@@ -1,38 +1,31 @@
-name: Build mtd-utils for ARMv7
-
+name: Build mtd-utils for arm32v7
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+  workflow_dispatch:
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: macos-14
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-      with:
-        platforms: arm
-
-    - name: Build mtd-utils in ARMv7 container
-      run: |
-        docker run --rm -e DEBIAN_FRONTEND=noninteractive -v ${{ github.workspace }}:/workspace -w /workspace arm32v7/ubuntu /bin/bash -c "
-          apt-get update &&
-          apt-get install -y tzdata build-essential libtool autoconf automake zlib1g-dev pkg-config uuid-dev git &&
-          git clone git://git.infradead.org/mtd-utils.git &&
-          cd mtd-utils &&
-          ./autogen.sh &&
-          ./configure &&
-          make
-        "
-
-    - name: Upload binaries
-      uses: actions/upload-artifact@v2
-      with:
-        name: mtd-utils-binaries
-        path: mtd-utils
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm
+      - name: Build mtd-utils
+        run: |
+          docker run --rm -e -v ${{ github.workspace }}:/workspace -w /workspace arm32v7/ubuntu:24.04 /bin/bash -c "
+            apt update &&
+            apt upgrade &&
+            apt install -y autoconf automake pkg-config
+            git clone git://git.infradead.org/mtd-utils.git &&
+            cd mtd-utils &&
+            ./autogen.sh &&
+            ./configure &&
+            make misc-utils &&
+            make DESTDIR=/workspace install
+          "
+      - name: Upload mtd-utils
+        uses: actions/upload-artifact@v4
+        with:
+          name: mtd-utils
+          path: ${{ github.workspace }}
