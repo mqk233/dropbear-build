@@ -23,7 +23,7 @@ jobs:
       run: |
         docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace arm32v7/ubuntu:20.04 /bin/bash -c "
           apt-get update &&
-          apt-get install -y build-essential libtool autoconf automake zlib1g-dev git &&
+          apt-get install -y build-essential libtool autoconf automake zlib1g-dev pkg-config git &&
           git clone git://git.infradead.org/mtd-utils.git &&
           cd mtd-utils &&
           ./autogen.sh &&
