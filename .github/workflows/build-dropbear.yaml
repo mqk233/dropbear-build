@@ -30,11 +30,11 @@ jobs:
           echo "y" | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
       - name: Setup the Android platform-tools environment
         run: |
-          sdkmanager --sdk_root=$ANDROID_HOME --channel=0 --install "platform-tools"
+          sdkmanager --sdk_root=$ANDROID_HOME --channel=0 "platform-tools"
           echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
       - name: Setup the Android ndk environment
         run: |
-          sdkmanager --sdk_root=$ANDROID_HOME --channel=0 --install "ndk;29.0.14206865"
+          sdkmanager --sdk_root=$ANDROID_HOME --channel=0 "ndk;29.0.14206865"
           echo "$ANDROID_HOME/ndk/29.0.14206865" >> $GITHUB_PATH
       - name: test
         run: |
