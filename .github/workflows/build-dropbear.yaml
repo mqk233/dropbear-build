@@ -43,4 +43,7 @@ jobs:
           ls -al libs/armeabi-v7a
           ls -al libs/x86
           ls -al libs/x86_64
-          ls -al obj/local
+          ls -al obj/local/arm64-v8a
+          ls -al obj/local/armeabi-v7a
+          ls -al obj/local/x86
+          ls -al obj/local/x86_64
