@@ -41,5 +41,8 @@ jobs:
           echo $ANDROID_HOME
           echo $HOME_TMP
           sdkmanager --sdk_root=$ANDROID_HOME --version
+          ls -al $ANDROID_HOME
+          ls -al $ANDROID_HOME/platform-tools
+          ls -al $ANDROID_HOME/ndk/29.0.14206865
           adb --version
           ndk-build --version
