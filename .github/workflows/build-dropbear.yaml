@@ -39,6 +39,8 @@ jobs:
       - name: Build hev-socks5-tunnel
         run: |
           ndk-build
-          ls -al jni
-          ls -al libs
-          ls -al obj
+          ls -al libs/arm64-v8a
+          ls -al libs/armeabi-v7a
+          ls -al libs/x86
+          ls -al libs/x86_64
+          ls -al obj/local
