@@ -41,5 +41,5 @@ jobs:
           echo $ANDROID_HOME
           echo $HOME_TMP
           sdkmanager --sdk_root=$ANDROID_HOME --version
-          adb ndk-build
-          ndk-build ndk-build
+          adb --version
+          ndk-build --version
