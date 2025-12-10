@@ -27,7 +27,7 @@ jobs:
           wget -q https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip -O $HOME_TMP/commandlinetools-linux.zip
           unzip -q $HOME_TMP/commandlinetools-linux.zip -d $ANDROID_HOME
           echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          echo "yes" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
       - name: Setup the Android platform-tools environment
         run: |
           sdkmanager --channel=0 --install "platform-tools"
