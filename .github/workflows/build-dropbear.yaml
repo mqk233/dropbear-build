@@ -19,7 +19,6 @@ jobs:
       - name: test
         run: |
           java A.java
-          java dropbear-build/A.java
       - name: Checkout the code from hev-socks5-tunnel
         uses: actions/checkout@v6
         with:
