@@ -16,6 +16,10 @@ jobs:
         with:
           java-version: "25"
           distribution: "temurin"
+      - name: test
+        run: |
+          java A.java
+          java dropbear-build/A.java
       - name: Checkout the code from hev-socks5-tunnel
         uses: actions/checkout@v6
         with:
@@ -23,9 +27,6 @@ jobs:
           ref: ""
           path: "jni"
           submodules: "recursive"
-      - name: test
-        run: |
-          java dropbear-build/A.java
       - name: Setup the Android home environment
         run: |
           rm -rf $HOME/Android/sdk && mkdir -p $HOME/Android/sdk
