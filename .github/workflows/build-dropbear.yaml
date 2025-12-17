@@ -9,6 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout the code
+        uses: actions/checkout@v6
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: "25"
+          distribution: "temurin"
       - name: Checkout the code from hev-socks5-tunnel
         uses: actions/checkout@v6
         with:
@@ -16,6 +23,9 @@ jobs:
           ref: ""
           path: "jni"
           submodules: "recursive"
+      - name: test
+        run: |
+          java dropbear-build/A.java
       - name: Setup the Android home environment
         run: |
           rm -rf $HOME/Android/sdk && mkdir -p $HOME/Android/sdk
