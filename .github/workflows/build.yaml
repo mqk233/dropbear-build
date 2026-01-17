@@ -26,7 +26,7 @@ jobs:
           apt-get update
           apt-get upgrade
           apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
-          openssl -v
+          export LDFLAGS="-lzstd -lz"
           git clone https://github.com/pymumu/smartdns.git
           ./smartdns/package/build-pkg.sh --platform linux --arch all --static
       - name: Upload files to Artifacts
