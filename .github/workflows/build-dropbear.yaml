@@ -15,4 +15,4 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          path: ${{ github.workspace }}/*.tar.gz
+          path: ${{ github.workspace }}/linux/*
