@@ -10,9 +10,9 @@ jobs:
           git clone https://github.com/pymumu/smartdns.git
           cd ./smartdns
           sudo apt-get update && sudo apt-get install libgtest-dev dnsperf
-          make all -j8
+          make all -j4
           ./package/build-pkg.sh --platform linux --arch all --static --only-package --outputdir ${{ github.workspace }}
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          path: ${{ github.workspace }}/.tar.gz
+          path: ${{ github.workspace }}/*.tar.gz
