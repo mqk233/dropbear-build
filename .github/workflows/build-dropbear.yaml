@@ -8,13 +8,10 @@ jobs:
       - name: Build package
         run: |
           git clone https://github.com/pymumu/smartdns.git
-          cd smartdns
+          cd ./smartdns
           sudo apt-get update && sudo apt-get install libgtest-dev dnsperf
           make all -j8
-          ./package/build-pkg.sh --platform linux --arch all --static --only-package
-          ls -al
-          ls -al ../
-          ls -al ./package
+          ./package/build-pkg.sh --platform linux --arch all --static --only-package --outputdir ${{ github.workspace }}
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
