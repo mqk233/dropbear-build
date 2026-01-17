@@ -16,11 +16,9 @@ jobs:
         run: |
           git clone https://github.com/pymumu/smartdns.git
           ./smartdns/package/build-pkg.sh --platform linux --arch all --static --outputdir ${{ github.workspace }}
-          mkdir ${{ github.workspace }}/artifacts
-          mv ${{ github.workspace }}/smartdns/src/smartdns ${{ github.workspace }}/artifacts/smartdns-${{ matrix.name }}
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v6
         with:
-          path: ${{ github.workspace }}/artifacts/*
-          name: "smartdns-${{ matrix.name }}"
+          path: ${{ github.workspace }}/smartdns/src/smartdns
+          name: smartdns-${{ matrix.name }}
           compression-level: 0
