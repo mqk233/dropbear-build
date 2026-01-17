@@ -12,6 +12,8 @@ jobs:
           sudo apt-get update && sudo apt-get install libgtest-dev dnsperf
           make all -j8
           ./package/build-pkg.sh --platform linux --arch all --static --only-package --outputdir ${{ github.workspace }}
+          ls -al ${{ github.workspace }}
+          ls -al ${{ github.workspace }}/linux
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
