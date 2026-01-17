@@ -14,6 +14,14 @@ jobs:
     steps:
       - name: Build package
         run: |
+          curl LO https://github.com/openssl/openssl/releases/download/openssl-3.6.0/openssl-3.6.0.tar.gz
+          tar -xzf ./openssl-3.6.0.tar.gz
+          cd ./openssl-3.6.0
+          ./Configure
+          make
+          make test
+          make install
+          openssl -v
           git clone https://github.com/pymumu/smartdns.git
           ./smartdns/package/build-pkg.sh --platform linux --arch all --static
       - name: Upload files to Artifacts
