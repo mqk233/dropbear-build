@@ -2,8 +2,15 @@ name: Build
 on:
   workflow_dispatch:
 jobs:
-  build:
-    runs-on: ubuntu-24.04
+  sync:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: "ubuntu-24.04"
+            name: "x86_64"
+          - os: "ubuntu-24.04-arm"
+            name: "aarch64"
     steps:
       - name: Build package
         run: |
@@ -12,5 +19,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          name: "smartdns-x86_64"
+          name: "smartdns-${{ matrix.name }}"
           path: ${{ github.workspace }}/smartdns/src/smartdns
