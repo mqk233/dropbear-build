@@ -27,8 +27,8 @@ jobs:
           apt-get upgrade
           apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
           git clone https://github.com/pymumu/smartdns.git
-          sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
-          sed -i 's/-lcrypto -lpthread/-lcrypto -lz -lpthread/' ./smartdns/src/Makefile
+          sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
+          sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
           ./smartdns/package/build-pkg.sh --platform linux --arch all --static
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v6
