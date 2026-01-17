@@ -12,5 +12,6 @@ jobs:
       - name: Build package
         run: |
           ls -al
-          /home/runner/work/dropbear-build/dropbear-build/package/build-pkg.sh --platform linux --arch all --static --only-package
+          pwd
+          /home/runner/work/dropbear-build/dropbear-build/package/build-pkg.sh
           ls -al
