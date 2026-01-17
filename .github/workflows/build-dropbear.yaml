@@ -11,5 +11,6 @@ jobs:
           repository: "pymumu/smartdns"
       - name: Build package
         run: |
-          ./smartdns/package/build-pkg.sh --platform linux --arch all --static --only-package
+          cd ./smartdns/package
+          ./build-pkg.sh --platform linux --arch all --static --only-package
           ls -al
