@@ -1,59 +1,15 @@
 name: Build
 on:
   workflow_dispatch:
-    inputs:
-      release_tag:
-        required: false
-        type: string
 jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout the code
         uses: actions/checkout@v6
-      - name: Set up JDK
-        uses: actions/setup-java@v5
         with:
-          java-version: "21"
-          distribution: "temurin"
-      - name: test
+          repository: "pymumu/smartdns"
+      - name: Build package
         run: |
-          java A.java
-      - name: Checkout the code from hev-socks5-tunnel
-        uses: actions/checkout@v6
-        with:
-          repository: "heiher/hev-socks5-tunnel"
-          ref: ""
-          path: "jni"
-          submodules: "recursive"
-      - name: Setup the Android home environment
-        run: |
-          rm -rf $HOME/Android/sdk && mkdir -p $HOME/Android/sdk
-          echo "ANDROID_HOME=$HOME/Android/sdk" >> $GITHUB_ENV
-          rm -rf $HOME/tmp && mkdir -p $HOME/tmp
-          echo "HOME_TMP=$HOME/tmp" >> $GITHUB_ENV
-      - name: Setup the Android cmdline-tools environment
-        run: |
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip -O $HOME_TMP/commandlinetools-linux.zip
-          unzip -q $HOME_TMP/commandlinetools-linux.zip -d $ANDROID_HOME
-          echo "$ANDROID_HOME/cmdline-tools/bin" >> $GITHUB_PATH
-          echo "y" | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
-      - name: Setup the Android platform-tools environment
-        run: |
-          echo "y" | sdkmanager --sdk_root=$ANDROID_HOME --channel=0 --install "platform-tools"
-          echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
-      - name: Setup the Android ndk environment
-        run: |
-          echo "y" | sdkmanager --sdk_root=$ANDROID_HOME --channel=0 --install "ndk;29.0.14206865"
-          echo "$ANDROID_HOME/ndk/29.0.14206865" >> $GITHUB_PATH
-      - name: Build hev-socks5-tunnel
-        run: |
-          ndk-build
-          ls -al libs/arm64-v8a
-          ls -al libs/armeabi-v7a
-          ls -al libs/x86
-          ls -al libs/x86_64
-          ls -al obj/local/arm64-v8a
-          ls -al obj/local/armeabi-v7a
-          ls -al obj/local/x86
-          ls -al obj/local/x86_64
+          ./smartdns/package/build-pkg.sh --platform linux --arch all --static --only-package
+          ls -al
