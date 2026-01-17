@@ -12,4 +12,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
+          name: "smartdns-x86_64"
           path: ${{ github.workspace }}/smartdns/src/smartdns
