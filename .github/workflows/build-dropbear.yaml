@@ -12,5 +12,5 @@ jobs:
       - name: Build package
         run: |
           ls -al
-          ./package/build-pkg.sh --platform linux --arch all --static --only-package --outputdir ./
+          ./package/build-pkg.sh --platform debian --arch all --static --only-package --outputdir
           ls -al
