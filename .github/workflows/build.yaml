@@ -19,6 +19,6 @@ jobs:
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v6
         with:
-          path: ${{ github.workspace }}/smartdns/src/smartdns
+          path: ${{ github.workspace }}/smartdns/package
           name: smartdns-${{ matrix.name }}
           compression-level: 0
