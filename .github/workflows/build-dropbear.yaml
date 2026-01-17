@@ -14,7 +14,7 @@ jobs:
           ./package/build-pkg.sh --platform linux --arch all --static --only-package
           ls -al
       - name: Upload artifact
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v6
         with:
           name: armeabi-v7a
           path: ${{ github.workspace }}/*.tar.gz
