@@ -13,5 +13,5 @@ jobs:
         run: |
           ls -al
           pwd
-          /home/runner/work/dropbear-build/dropbear-build/package/build-pkg.sh
+          /home/runner/work/dropbear-build/dropbear-build/package/build-pkg.sh --static --only-package
           ls -al
