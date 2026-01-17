@@ -16,21 +16,9 @@ jobs:
         run: |
           git clone https://github.com/pymumu/smartdns.git
           ./smartdns/package/build-pkg.sh --platform linux --arch all --static --outputdir ${{ github.workspace }}
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload files to Artifacts
+        uses: actions/upload-artifact@v6
         with:
-          tag_name: v1.0.0
-          release_name: v1.0.0
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/smartdns/src/smartdns
-          asset_name: "smartdns-${{ matrix.name }}"
+          name: "smartdns-${{ matrix.name }}"
+          path: |
+            ${{ github.workspace }}/smartdns/src/smartdns*
