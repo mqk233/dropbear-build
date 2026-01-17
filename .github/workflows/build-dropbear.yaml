@@ -12,5 +12,6 @@ jobs:
           submodules: "recursive"
       - name: Build package
         run: |
-          /home/runner/work/dropbear-build/dropbear-build/package/build-pkg.sh --platform linux --arch x86-64 --static --only-package --outputdir /home/runner/work/dropbear-build/dropbear-build
+          git clone https://github.com/pymumu/smartdns.git
+          /home/runner/work/dropbear-build/dropbear-build/smartdns/package/build-pkg.sh --platform linux --arch all --static --only-package --outputdir /home/runner/work/dropbear-build/dropbear-build
           ls -al
