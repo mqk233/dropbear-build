@@ -12,6 +12,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install libgtest-dev dnsperf
           make all -j4
+          ls -al
           ls -al target
           ls -al target/usr/sbin/smartdns
           #./package/build-pkg.sh --platform linux --arch all --static --outputdir ${{ github.workspace }}
