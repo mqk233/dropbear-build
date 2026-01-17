@@ -8,7 +8,7 @@ jobs:
       - name: Build package
         run: |
           git clone https://github.com/pymumu/smartdns.git
-          ./smartdns/package/build-pkg.sh --platform linux --arch x86-64 --static --outputdir ${{ github.workspace }}
+          ./smartdns/package/build-pkg.sh --platform linux --arch all --static --outputdir ${{ github.workspace }}
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
