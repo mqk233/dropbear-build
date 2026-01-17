@@ -23,8 +23,8 @@ jobs:
           #make -j4
           #make test -j4
           #sudo make install -j4
-          sudo apt-get update
-          sudo apt-get install openssl
+          apt-get update
+          apt-get install openssl
           openssl -v
           git clone https://github.com/pymumu/smartdns.git
           ./smartdns/package/build-pkg.sh --platform linux --arch all --static
