@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Build package
         run: |
-          curl LO https://github.com/openssl/openssl/releases/download/openssl-3.6.0/openssl-3.6.0.tar.gz
+          wget https://github.com/openssl/openssl/releases/download/openssl-3.6.0/openssl-3.6.0.tar.gz
           tar -xzf ./openssl-3.6.0.tar.gz
           cd ./openssl-3.6.0
           ./Configure
