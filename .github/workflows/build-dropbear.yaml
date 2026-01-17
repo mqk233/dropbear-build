@@ -11,5 +11,5 @@ jobs:
           repository: "pymumu/smartdns"
       - name: Build package
         run: |
-          /home/runner/work/dropbear-build/dropbear-build/package/build-pkg.sh --platform linux --static --only-package --outputdir /home/runner/work/dropbear-build/dropbear-build
+          /home/runner/work/dropbear-build/dropbear-build/package/build-pkg.sh --platform linux --arch x86-64 --static --only-package --outputdir /home/runner/work/dropbear-build/dropbear-build
           ls -al
