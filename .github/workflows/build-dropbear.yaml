@@ -16,5 +16,4 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          name: armeabi-v7a
           path: ${{ github.workspace }}/*.tar.gz
