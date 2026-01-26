@@ -8,9 +8,9 @@ jobs:
       matrix:
         include:
           - os: "ubuntu-24.04"
-            arch: "x86-64"
+            name: "x86_64"
           - os: "ubuntu-24.04-arm"
-            arch: "arm64"
+            name: "aarch64"
     steps:
       - name: Build package
         run: |
@@ -31,10 +31,10 @@ jobs:
           git clone https://github.com/pymumu/smartdns.git
           export CFLAGS="-I /usr/local/ssl/include" && \
           export LDFLAGS="-L /usr/local/ssl/lib -L /usr/local/ssl/lib64" && \
-          sh ./smartdns/package/build-pkg.sh --platform linux --arch ${{ matrix.arch }} --static
-          mv ${{ github.workspace }}/smartdns/src/smartdns ${{ github.workspace }}/smartdns-$(uname -m)
+          sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v6
         with:
-          path: ${{ github.workspace }}/smartdns-*
+          path: ${{ github.workspace }}/smartdns/src/smartdns
+          name: smartdns-${{ matrix.name }}
           compression-level: 0
