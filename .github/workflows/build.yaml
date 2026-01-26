@@ -4,15 +4,13 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    container:
-      image: debian:13
     strategy:
       matrix:
         include:
-          - os: "ubuntu-24.04"
+          - os: "ubuntu-25.10"
             arch: "x86-64"
             name: "x86_64"
-          - os: "ubuntu-24.04-arm"
+          - os: "ubuntu-25.10-arm"
             arch: "arm64"
             name: "aarch64"
     steps:
@@ -25,9 +23,9 @@ jobs:
           #make -j4
           #make test -j4
           #sudo make install -j4
-          apt-get update
-          apt-get upgrade
-          apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
+          sudo apt-get update
+          sudo apt-get upgrade
+          sudo apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
           git clone https://github.com/pymumu/smartdns.git
           sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
           sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
