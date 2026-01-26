@@ -29,7 +29,7 @@ jobs:
           echo >> ~/.bashrc
           echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> ~/.bashrc
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
-          sudo brew install openssl
+          brew install openssl
           #export LD_LIBRARY_PATH="/home/linuxbrew/.linuxbrew/opt/openssl@3/lib:$LD_LIBRARY_PATH"
           source ~/.bashrc
           openssl version -a
