@@ -20,7 +20,7 @@ jobs:
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
           \. "$HOME/.nvm/nvm.sh"
           source ~/.bashrc
-          nvm install 24
+          sudo nvm install 24
           curl -sSf https://sh.rustup.rs | sh
           export PATH="~/.cargo/bin:$PATH"
           wget https://github.com/openssl/openssl/releases/download/openssl-3.5.4/openssl-3.5.4.tar.gz
