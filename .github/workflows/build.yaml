@@ -33,7 +33,6 @@ jobs:
           sudo ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
           echo /usr/local/ssl/${{ matrix.opensslLibPath }} | sudo tee /etc/ld.so.conf.d/openssl-3.5.4.conf
           sudo ldconfig
-          openssl version -a
           cd ../
           sudo apt-get update
           sudo apt-get install -y git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
