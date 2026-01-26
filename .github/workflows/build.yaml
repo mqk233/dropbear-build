@@ -17,14 +17,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binutils perl curl make gcc clang wget unzip ca-certificates
           sudo update-ca-certificates
-          echo 1
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-          echo 2
           \. "$HOME/.nvm/nvm.sh"
-          echo 3
-          echo 'y' | nvm install 24
-          echo 4
-          curl -sSf https://sh.rustup.rs | sh
+          nvm install 24
+          curl -sSf https://sh.rustup.rs | sh -s -- -y
           export PATH="~/.cargo/bin:$PATH"
           wget https://github.com/openssl/openssl/releases/download/openssl-3.5.4/openssl-3.5.4.tar.gz
           tar -xzf ./openssl-3.5.4.tar.gz
