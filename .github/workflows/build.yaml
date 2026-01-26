@@ -7,10 +7,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: "ubuntu-25.10"
+          - os: "macos-15-large"
             arch: "x86-64"
             name: "x86_64"
-          - os: "ubuntu-25.10-arm"
+          - os: "macos-15-xlarge"
             arch: "arm64"
             name: "aarch64"
     steps:
@@ -23,12 +23,13 @@ jobs:
           #make -j4
           #make test -j4
           #sudo make install -j4
-          sudo apt-get update
-          sudo apt-get upgrade
-          sudo apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
+          #sudo apt-get update
+          #sudo apt-get upgrade
+          #sudo apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
+          brew install openssl
           git clone https://github.com/pymumu/smartdns.git
-          sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
-          sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
+          #sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
+          #sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
           ./smartdns/package/build-pkg.sh --platform linux --arch ${{ matrix.arch }} --static
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v6
