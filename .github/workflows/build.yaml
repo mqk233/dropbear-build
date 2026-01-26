@@ -9,10 +9,8 @@ jobs:
         include:
           - os: "ubuntu-24.04"
             arch: "x86-64"
-            name: "x86_64"
           - os: "ubuntu-24.04-arm"
             arch: "arm64"
-            name: "aarch64"
     steps:
       - name: Build package
         run: |
@@ -39,5 +37,4 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           path: ${{ github.workspace }}/smartdns-*
-          name: smartdns-*
           compression-level: 0
