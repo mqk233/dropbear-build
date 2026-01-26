@@ -24,8 +24,8 @@ jobs:
           #sudo make install -j$(nproc)
           #openssl version
           sudo apt-get update
-          sudo apt-get remove --purge openssl
-          #sudo apt-get autoremove
+          sudo apt-get remove openssl
+          sudo apt-get autoremove
           sudo apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           echo >> ~/.bashrc
