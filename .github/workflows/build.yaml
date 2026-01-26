@@ -33,7 +33,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
           git clone https://github.com/pymumu/smartdns.git
-          ./smartdns/package/build-pkg.sh --platform linux --arch ${{ matrix.arch }} --static
+          export CFLAGS="-I /usr/local/ssl/include" && \
+          export LDFLAGS="-L /usr/local/ssl/${{ matrix.opensslLibPath }}" && \
+          sh ./smartdns/package/build-pkg.sh --platform linux --arch ${{ matrix.arch }} --static
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v6
         with:
