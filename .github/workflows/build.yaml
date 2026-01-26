@@ -16,24 +16,23 @@ jobs:
     steps:
       - name: Build package
         run: |
-          #wget https://github.com/openssl/openssl/releases/download/openssl-3.5.4/openssl-3.5.4.tar.gz
-          #tar -xzf ./openssl-3.5.4.tar.gz
-          #cd ./openssl-3.5.4
-          #./Configure
-          #make -j$(nproc)
-          #sudo make install -j$(nproc)
-          #openssl version
+          wget https://github.com/openssl/openssl/releases/download/openssl-3.5.4/openssl-3.5.4.tar.gz
+          tar -xzf ./openssl-3.5.4.tar.gz
+          cd ./openssl-3.5.4
+          $ ./Configure --prefix=/usr/local/ssl --openssldir=/usr/local/ssl '-Wl,-rpath,$(LIBRPATH)'
+          make -j$(nproc)
+          sudo make install -j$(nproc)
+          openssl version -a
           sudo apt-get update
           sudo apt-get install -y git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo >> ~/.bashrc
-          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> ~/.bashrc
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
-          sudo apt-get remove openssl
-          brew install openssl
+          #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          #echo >> ~/.bashrc
+          #echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> ~/.bashrc
+          #eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
+          #sudo apt-get remove openssl
           #export LD_LIBRARY_PATH="/home/linuxbrew/.linuxbrew/opt/openssl@3/lib:$LD_LIBRARY_PATH"
-          source ~/.bashrc
-          openssl version -a
+          #source ~/.bashrc
+          #openssl version -a
           git clone https://github.com/pymumu/smartdns.git
           #sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
           #sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
