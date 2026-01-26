@@ -43,12 +43,15 @@ jobs:
           export LDFLAGS="-L /usr/local/ssl/lib -L /usr/local/ssl/lib64" && \
           sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
           echo $(date "+%Y%m%d%H%M%S") >./timestamp
-          git add ./timestamp
-          git commit -m "Update"
-          gh release create "v1.0.0" --generate-notes ${{ github.workspace }}/smartdns/src/smartdns
-      - name: Upload files to Artifacts
+          mkdir ${{ github.workspace }}/releases
+          cp ${{ github.workspace }}/smartdns/src/smartdns ${{ github.workspace }}/releases/smartdns-$(dpkg --print-architecture)
+      - name: Upload files to Artifact
         uses: actions/upload-artifact@v6
         with:
           path: ${{ github.workspace }}/smartdns/src/smartdns
           name: ${{ matrix.name }}
           compression-level: 0
+      - name: Upload files to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ github.workspace }}/releases
