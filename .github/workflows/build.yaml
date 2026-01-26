@@ -7,10 +7,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: "macos-15-large"
+          - os: "macos-15-intel"
             arch: "x86-64"
             name: "x86_64"
-          - os: "macos-15-xlarge"
+          - os: "macos-15"
             arch: "arm64"
             name: "aarch64"
     steps:
