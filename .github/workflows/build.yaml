@@ -26,7 +26,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          source ~/.bashrc
+          echo >> ~/.bashrc
+          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> ~/.bashrc
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
           brew install openssl
           openssl version
           git clone https://github.com/pymumu/smartdns.git
