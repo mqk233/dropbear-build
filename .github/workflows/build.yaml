@@ -27,7 +27,7 @@ jobs:
               ./Configure --prefix=/usr/local/ssl --openssldir=/usr/local/ssl $OPENSSL_OPTIONS '-Wl,-rpath,$(LIBRPATH)'
           fi
           make all -j$(nproc)
-          sudo make install_sw -j$(nproc)
+          make install_sw -j$(nproc)
           cd ../
           git clone https://github.com/pymumu/smartdns.git
           export CFLAGS="-I /usr/local/ssl/include" && \
