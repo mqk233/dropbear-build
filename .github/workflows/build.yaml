@@ -1,12 +1,6 @@
 name: Build
 on:
   workflow_dispatch:
-    inputs:
-      release_tag:
-        required: true
-        type: string
-env:
-  GH_TOKEN: ${{ github.token }}
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -14,7 +8,9 @@ jobs:
       matrix:
         include:
           - os: "ubuntu-24.04"
+            name: "smartdns-x86_64"
           - os: "ubuntu-24.04-arm"
+            name: "smartdns-aarch64"
     steps:
       - name: Build package
         run: |
@@ -42,5 +38,9 @@ jobs:
           export CFLAGS="-I /usr/local/ssl/include" && \
           export LDFLAGS="-L /usr/local/ssl/lib -L /usr/local/ssl/lib64" && \
           sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
-          mv ${{ github.workspace }}/smartdns/src/smartdns ${{ github.workspace }}/smartdns/src/smartdns-$(uname -m)
-          gh release create ${{ github.event.inputs.release_tag }} --generate-notes ${{ github.workspace }}/smartdns/src/smartdns-$(uname -m)
+      - name: Upload files to Artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          path: ${{ github.workspace }}/smartdns/src/smartdns
+          name: ${{ matrix.name }}
+          compression-level: 0
