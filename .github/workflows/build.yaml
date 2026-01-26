@@ -1,8 +1,10 @@
 name: Build
 on:
   workflow_dispatch:
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    inputs:
+      release_tag:
+        required: true
+        type: string
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -54,4 +56,5 @@ jobs:
       - name: Upload files to release
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ github.workspace }}/releases
+          files: ${{ github.workspace }}/releases/*
+          tag_name: ${{ github.event.inputs.release_tag }}
