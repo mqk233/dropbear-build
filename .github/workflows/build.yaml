@@ -32,7 +32,7 @@ jobs:
           brew install openssl
           export LD_LIBRARY_PATH="/home/linuxbrew/.linuxbrew/opt/openssl@3/lib:$LD_LIBRARY_PATH"
           source ~/.bashrc
-          whereis openssl
+          which openssl
           openssl version -a
           ldd openssl
           git clone https://github.com/pymumu/smartdns.git
