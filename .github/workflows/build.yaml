@@ -10,8 +10,10 @@ jobs:
       matrix:
         include:
           - os: "ubuntu-24.04"
+            arch: "x86-64"
             name: "x86_64"
           - os: "ubuntu-24.04-arm"
+            arch: "arm64"
             name: "aarch64"
     steps:
       - name: Build package
@@ -29,7 +31,7 @@ jobs:
           git clone https://github.com/pymumu/smartdns.git
           sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
           sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
-          ./smartdns/package/build-pkg.sh --platform linux --arch all --static
+          ./smartdns/package/build-pkg.sh --platform linux --arch ${{ matrix.arch }} --static
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v6
         with:
