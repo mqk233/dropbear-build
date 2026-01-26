@@ -30,7 +30,11 @@ jobs:
           echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> ~/.bashrc
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
           brew install openssl
-          openssl version
+          export LD_LIBRARY_PATH="/home/linuxbrew/.linuxbrew/opt/openssl@3/lib:$LD_LIBRARY_PATH"
+          source ~/.bashrc
+          whereis openssl
+          openssl version -a
+          ldd openssl
           git clone https://github.com/pymumu/smartdns.git
           #sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
           #sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
