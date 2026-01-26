@@ -14,6 +14,9 @@ jobs:
     steps:
       - name: Build package
         run: |
+          sudo apt-get update
+          sudo apt-get install -y binutils perl curl make gcc clang wget unzip ca-certificates
+          update-ca-certificates
           wget https://github.com/openssl/openssl/releases/download/openssl-3.5.4/openssl-3.5.4.tar.gz
           tar -xzf ./openssl-3.5.4.tar.gz
           cd ./openssl-3.5.4
@@ -26,8 +29,6 @@ jobs:
           make all -j$(nproc)
           sudo make install_sw -j$(nproc)
           cd ../
-          sudo apt-get update
-          sudo apt-get install -y git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
           git clone https://github.com/pymumu/smartdns.git
           export CFLAGS="-I /usr/local/ssl/include" && \
           export LDFLAGS="-L /usr/local/ssl/lib -L /usr/local/ssl/lib64" && \
