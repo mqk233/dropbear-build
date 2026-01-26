@@ -16,13 +16,13 @@ jobs:
     steps:
       - name: Build package
         run: |
-          #wget https://github.com/openssl/openssl/releases/download/openssl-3.5.4/openssl-3.5.4.tar.gz
-          #tar -xzf ./openssl-3.5.4.tar.gz
-          #cd ./openssl-3.5.4
-          #./Configure
-          #make -j4
-          #make test -j4
-          #sudo make install -j4
+          wget https://github.com/openssl/openssl/releases/download/openssl-3.5.4/openssl-3.5.4.tar.gz
+          tar -xzf ./openssl-3.5.4.tar.gz
+          cd ./openssl-3.5.4
+          ./Configure
+          make -j$(nproc)
+          make test -j$(nproc)
+          sudo make install -j$(nproc)
           sudo apt-get update
           sudo apt-get upgrade
           sudo apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
