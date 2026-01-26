@@ -22,20 +22,15 @@ jobs:
           ./Configure --prefix=/usr/local/ssl --openssldir=/usr/local/ssl '-Wl,-rpath,$(LIBRPATH)'
           make -j$(nproc)
           sudo make install -j$(nproc)
+          sudo mv /usr/bin/openssl /usr/bin/openssl.bak
+          sudo ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
+          echo /usr/local/ssl/lib | sudo tee /etc/ld.so.conf.d/openssl-3.5.4.conf
+          sudo ldconfig
           openssl version -a
+          cd ../
           sudo apt-get update
           sudo apt-get install -y git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
-          #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          #echo >> ~/.bashrc
-          #echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> ~/.bashrc
-          #eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
-          #sudo apt-get remove openssl
-          #export LD_LIBRARY_PATH="/home/linuxbrew/.linuxbrew/opt/openssl@3/lib:$LD_LIBRARY_PATH"
-          #source ~/.bashrc
-          #openssl version -a
           git clone https://github.com/pymumu/smartdns.git
-          #sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
-          #sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
           ./smartdns/package/build-pkg.sh --platform linux --arch ${{ matrix.arch }} --static
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v6
