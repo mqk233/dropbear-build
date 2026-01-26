@@ -8,9 +8,9 @@ jobs:
       matrix:
         include:
           - os: "ubuntu-24.04"
-            name: "x86_64"
+            name: "smartdns-x86_64"
           - os: "ubuntu-24.04-arm"
-            name: "aarch64"
+            name: "smartdns-aarch64"
     steps:
       - name: Build package
         run: |
@@ -36,5 +36,5 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           path: ${{ github.workspace }}/smartdns/src/smartdns
-          name: smartdns-${{ matrix.name }}
+          name: ${{ matrix.name }}
           compression-level: 0
