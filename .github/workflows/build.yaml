@@ -16,16 +16,18 @@ jobs:
     steps:
       - name: Build package
         run: |
-          wget https://github.com/openssl/openssl/releases/download/openssl-3.5.4/openssl-3.5.4.tar.gz
-          tar -xzf ./openssl-3.5.4.tar.gz
-          cd ./openssl-3.5.4
-          ./Configure
-          make -j$(nproc)
-          make test -j$(nproc)
-          sudo make install -j$(nproc)
+          #wget https://github.com/openssl/openssl/releases/download/openssl-3.5.4/openssl-3.5.4.tar.gz
+          #tar -xzf ./openssl-3.5.4.tar.gz
+          #cd ./openssl-3.5.4
+          #./Configure
+          #make -j$(nproc)
+          #sudo make install -j$(nproc)
+          #openssl version
           sudo apt-get update
-          sudo apt-get upgrade
           sudo apt-get install -y openssl git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          brew install openssl
+          openssl version
           git clone https://github.com/pymumu/smartdns.git
           #sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
           #sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
