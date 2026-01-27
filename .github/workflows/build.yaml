@@ -40,8 +40,8 @@ jobs:
           fi
           make all -j$(nproc)
           sudo make install_sw -j$(nproc)
-          cd ../
 
+          cd ${{ github.workspace }}
           git clone https://github.com/pymumu/smartdns.git
           export CFLAGS="-I /usr/local/ssl/include"
           export LDFLAGS="-L /usr/local/ssl/lib -L /usr/local/ssl/lib64"
