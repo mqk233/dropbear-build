@@ -57,4 +57,3 @@ jobs:
         with:
           files: ${{ github.workspace }}/releases/*
           tag_name: ${{ github.event.inputs.release_tag }}
-          generate_release_notes: true
