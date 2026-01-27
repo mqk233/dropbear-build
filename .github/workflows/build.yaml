@@ -47,7 +47,7 @@ jobs:
           sudo make install_sw -j$(nproc)
       - name: Build smartdns
         run: |
-          git clone https://github.com/pymumu/smartdns.git
+          git clone --depth 1 https://github.com/pymumu/smartdns.git
           export CFLAGS="-I $OPENSSL_PREFIX/include"
           export LDFLAGS="-L $OPENSSL_PREFIX/lib -L $OPENSSL_PREFIX/lib64"
           sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
