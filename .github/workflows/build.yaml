@@ -39,7 +39,8 @@ jobs:
           rm -rf ./openssl && mkdir ./openssl && cd ./openssl
           curl -sSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz | tar --strip-components=1 -zx
           if [ "$(uname -m)" = "aarch64" ]; then
-              ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX $OPENSSL_OPTIONS -mno-outline-atomics '-Wl,-rpath,$(LIBRPATH)'
+          #    ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX $OPENSSL_OPTIONS -mno-outline-atomics '-Wl,-rpath,$(LIBRPATH)'
+          ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX '-Wl,-rpath,$(LIBRPATH)'
           else
               ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX $OPENSSL_OPTIONS '-Wl,-rpath,$(LIBRPATH)'
           fi
