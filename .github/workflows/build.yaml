@@ -49,7 +49,6 @@ jobs:
           git clone --depth=1 https://github.com/pymumu/smartdns.git
           export CFLAGS="-I$OPENSSL_PREFIX/include"
           export LDFLAGS="-L$OPENSSL_PREFIX/lib -L$OPENSSL_PREFIX/lib64"
-          ls -al ./smartdns/package/
           sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
           rm -rf ./releases && mkdir ./releases
           mv ./smartdns/src/smartdns ./releases/${{ matrix.name }}
