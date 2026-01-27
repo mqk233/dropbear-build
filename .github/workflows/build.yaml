@@ -46,7 +46,6 @@ jobs:
           export CFLAGS="-I /usr/local/ssl/include"
           export LDFLAGS="-L /usr/local/ssl/lib -L /usr/local/ssl/lib64"
           sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
-
           rm -rf ./releases && mkdir ./releases
           mv ./smartdns/src/smartdns ./releases/${{ matrix.name }}
       - name: Upload files to Artifact
