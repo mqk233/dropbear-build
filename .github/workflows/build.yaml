@@ -26,4 +26,5 @@ jobs:
         run: |
           apt-get update
           apt-get upgrade -y
+          locale -a
           locale
