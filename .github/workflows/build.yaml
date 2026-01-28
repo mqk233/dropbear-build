@@ -14,22 +14,43 @@ jobs:
       matrix:
         include:
           - os: "ubuntu-24.04"
-            name: "x86_64"
           - os: "ubuntu-24.04-arm"
-            name: "aarch64"
+    env:
+      OPENSSL_VERSION: "3.5.5"
+      OPENSSL_PREFIX: "/usr/local/openssl"
     steps:
-      - name: Build package
-        run: |
-          apt-get update
-          apt-get upgrade -y
-          apt-get install -y binutils perl curl make gcc clang wget unzip ca-certificates git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
-          git clone https://github.com/pymumu/smartdns.git
-          #sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
-          #sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
-          sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
-      - name: Upload files to Artifacts
-        uses: actions/upload-artifact@v6
+      - name: Setup node
+        uses: actions/setup-node@v6
         with:
-          path: ${{ github.workspace }}/smartdns/src/smartdns
-          name: smartdns-${{ matrix.name }}
-          compression-level: 0
+          node-version: lts/*
+          check-latest: true
+      - name: Setup rust
+        run: rustup update stable && rustup default stable
+      - name: Build openssl
+        run: |
+          #sudo apt-get update
+          #sudo apt-get install -y binutils perl curl make gcc clang wget unzip ca-certificates
+          #sudo update-ca-certificates
+          #curl -sSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz | tar -zx
+          #cd ./openssl-$OPENSSL_VERSION
+          #if [ "$(uname -m)" = "aarch64" ]; then
+          #    ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX -mno-outline-atomics '-Wl,-rpath,$(LIBRPATH)'
+          #else
+          #    ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX '-Wl,-rpath,$(LIBRPATH)'
+          #fi
+          #make -j$(nproc) && sudo make install_sw
+      - name: Build smartdns
+        run: |
+          mkdir ./releases
+          export LDFLAGS="-L/usr/lib/$(uname -m)-linux-gnu"
+          rm -rf ./smartdns && git clone --depth=1 https://github.com/pymumu/smartdns.git
+          sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture)
+          strip ./smartdns/src/smartdns && mv ./smartdns/src/smartdns ./releases/smartdns-$(dpkg --print-architecture)
+          rm -rf ./smartdns && git clone --depth=1 https://github.com/pymumu/smartdns.git
+          sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
+          strip ./smartdns/src/smartdns && mv ./smartdns/src/smartdns ./releases/smartdns-static-$(dpkg --print-architecture)
+      - name: Upload files to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ github.workspace }}/releases/*
+          tag_name: ${{ github.event.inputs.release_tag }}
