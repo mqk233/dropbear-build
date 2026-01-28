@@ -11,7 +11,7 @@ jobs:
     container:
       image: debian:13
       env:
-        LC_ALL: C.UTF-8
+        LANG: C.UTF-8
     strategy:
       matrix:
         include:
