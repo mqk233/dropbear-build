@@ -31,7 +31,7 @@ jobs:
           else
               ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX '-Wl,-rpath,$(LIBRPATH)'
           fi
-          make -j$(nproc) && sudo make install_sw
+          make -j$(nproc) && make install_sw
       - name: Build smartdns
         run: |
           mkdir ./releases
