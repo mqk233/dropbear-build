@@ -13,7 +13,6 @@ jobs:
       env:
         LANGUAGE: en_US:en
         LANG: en_US.UTF-8
-        LC_ALL: en_US.UTF-8
     strategy:
       matrix:
         include:
@@ -24,8 +23,4 @@ jobs:
       OPENSSL_PREFIX: "/usr/local/openssl"
     steps:
       - name: Build openssl
-        run: |
-          locale
-          apt-get update
-          apt-get upgrade -y
-          apt-get install -y curl build-essential git
+        run: locale
