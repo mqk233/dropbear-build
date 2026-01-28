@@ -41,4 +41,5 @@ jobs:
           apt-get upgrade -y
           apt-get install -y locales
           locale-gen en_US.UTF-8
+          dpkg-reconfigure locales
           locale
