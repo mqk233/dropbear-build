@@ -19,13 +19,6 @@ jobs:
       OPENSSL_VERSION: "3.5.5"
       OPENSSL_PREFIX: "/usr/local/openssl"
     steps:
-      - name: Setup node
-        uses: actions/setup-node@v6
-        with:
-          node-version: lts/*
-          check-latest: true
-      - name: Setup rust
-        run: rustup update stable && rustup default stable
       - name: Build openssl
         run: |
           #sudo apt-get update
