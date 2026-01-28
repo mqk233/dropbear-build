@@ -24,5 +24,8 @@ jobs:
     steps:
       - name: Build openssl
         run: |
+          apt-get update
+          apt-get upgrade -y
+          apt-get install -y locales
           locale-gen en_US.UTF-8
           locale
