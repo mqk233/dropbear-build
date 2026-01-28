@@ -8,47 +8,28 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    container:
+      image: debian:13
     strategy:
       matrix:
         include:
           - os: "ubuntu-24.04"
+            name: "x86_64"
           - os: "ubuntu-24.04-arm"
-    env:
-      OPENSSL_VERSION: "3.5.5"
-      OPENSSL_PREFIX: "/usr/local/openssl"
+            name: "aarch64"
     steps:
-      - name: Setup node
-        uses: actions/setup-node@v6
-        with:
-          node-version: lts/*
-          check-latest: true
-      - name: Setup rust
-        run: rustup update stable && rustup default stable
-      - name: Build openssl
+      - name: Build package
         run: |
-          sudo apt-get update
-          sudo apt-get install -y binutils perl curl make gcc clang wget unzip ca-certificates
-          sudo update-ca-certificates
-          curl -sSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz | tar -zx
-          cd ./openssl-$OPENSSL_VERSION
-          if [ "$(uname -m)" = "aarch64" ]; then
-              ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX -mno-outline-atomics '-Wl,-rpath,$(LIBRPATH)'
-          else
-              ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX '-Wl,-rpath,$(LIBRPATH)'
-          fi
-          make -j$(nproc) && sudo make install_sw
-      - name: Build smartdns
-        run: |
-          export CFLAGS="-I$OPENSSL_PREFIX/include"
-          export LDFLAGS="-L$OPENSSL_PREFIX/lib -L$OPENSSL_PREFIX/lib64"
-          rm -rf ./smartdns && git clone --depth=1 https://github.com/pymumu/smartdns.git
-          sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture)
-          strip ./smartdns/src/smartdns && mv ./smartdns/src/smartdns ./smartdns/src/smartdns-$(dpkg --print-architecture)
-          rm -rf ./smartdns && git clone --depth=1 https://github.com/pymumu/smartdns.git
+          apt-get update
+          apt-get upgrade
+          apt-get install -y binutils perl curl make gcc clang wget unzip ca-certificates git build-essential pkg-config libssl-dev libzstd-dev zlib1g-dev libgtest-dev dnsperf
+          git clone https://github.com/pymumu/smartdns.git
+          #sed -i 's/-lcrypto -Wl,--whole-archive/-lcrypto -lzstd -lz -Wl,--whole-archive/' ./smartdns/src/Makefile
+          #sed -i 's/-lcrypto -lpthread/-lcrypto -lzstd -lz -lpthread/' ./smartdns/src/Makefile
           sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
-          strip ./smartdns/src/smartdns && mv ./smartdns/src/smartdns ./smartdns/src/smartdns-static-$(dpkg --print-architecture)
-      - name: Upload files to release
-        uses: softprops/action-gh-release@v2
+      - name: Upload files to Artifacts
+        uses: actions/upload-artifact@v6
         with:
-          files: ${{ github.workspace }}/smartdns/src/smartdns-*
-          tag_name: ${{ github.event.inputs.release_tag }}
+          path: ${{ github.workspace }}/smartdns/src/smartdns
+          name: smartdns-${{ matrix.name }}
+          compression-level: 0
