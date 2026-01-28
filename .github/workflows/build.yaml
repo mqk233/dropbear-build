@@ -23,6 +23,7 @@ jobs:
         run: |
           apt-get update
           apt-get upgrade -y
+          apt-get install -y curl
           curl -sSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz | tar -zx
           cd ./openssl-$OPENSSL_VERSION
           if [ "$(uname -m)" = "aarch64" ]; then
