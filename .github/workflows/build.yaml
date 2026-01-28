@@ -1,4 +1,4 @@
-name: Build
+name: Build with debian
 on:
   workflow_dispatch:
     inputs:
@@ -10,6 +10,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     container:
       image: debian:13
+      env:
+        LANG: en_US.UTF-8
+        LC_ALL: en_US.UTF-8
     strategy:
       matrix:
         include:
@@ -21,30 +24,7 @@ jobs:
     steps:
       - name: Build openssl
         run: |
+          locale
           apt-get update
           apt-get upgrade -y
           apt-get install -y curl build-essential git
-          curl -sSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz | tar -zx
-          cd ./openssl-$OPENSSL_VERSION
-          if [ "$(uname -m)" = "aarch64" ]; then
-              ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX -mno-outline-atomics '-Wl,-rpath,$(LIBRPATH)'
-          else
-              ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX '-Wl,-rpath,$(LIBRPATH)'
-          fi
-          make -j$(nproc) && make install_sw
-      - name: Build smartdns
-        run: |
-          mkdir ./releases
-          export CFLAGS="-I$OPENSSL_PREFIX/include"
-          export LDFLAGS="-L$OPENSSL_PREFIX/lib -L$OPENSSL_PREFIX/lib64"
-          rm -rf ./smartdns && git clone --depth=1 https://github.com/pymumu/smartdns.git
-          sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture)
-          strip ./smartdns/src/smartdns && mv ./smartdns/src/smartdns ./releases/smartdns-$(dpkg --print-architecture)
-          rm -rf ./smartdns && git clone --depth=1 https://github.com/pymumu/smartdns.git
-          sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
-          strip ./smartdns/src/smartdns && mv ./smartdns/src/smartdns ./releases/smartdns-static-$(dpkg --print-architecture)
-      - name: Upload files to release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: ${{ github.workspace }}/releases/*
-          tag_name: ${{ github.event.inputs.release_tag }}
