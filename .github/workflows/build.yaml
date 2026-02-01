@@ -7,11 +7,18 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: "windows-10"
-          - os: "windows-11"
+          - os: "windows-10-arm"
+          - os: "windows-11-arm"
           - os: "windows-2022"
           - os: "windows-2025"
     steps:
       - name: Test
         run: |
-          curl.exe https://api.cloudflare.com/cdn-cgi/trace
+          # 1. 定义 Chrome 可执行文件的完整路径
+          $chromePath = "C:\Program Files\Google\Chrome\Application\chrome.exe"  
+          # 2. 运行 Chrome 
+          # --headless: 无界面运行
+          # --disable-gpu: 禁用 GPU 加速（CI 环境必备）
+          # --dump-dom: 核心参数，渲染后输出完整的 DOM 内容
+          # --no-sandbox: 避免在容器环境中出现权限问题
+          & $chromePath --headless --disable-gpu --dump-dom --no-sandbox "https://api.cloudflare.com/cdn-cgi/trace"
