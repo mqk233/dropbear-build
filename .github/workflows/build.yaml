@@ -1,10 +1,6 @@
 name: Build with debian
 on:
   workflow_dispatch:
-    inputs:
-      release_tag:
-        type: string
-        required: true
 jobs:
   build:
     runs-on: ${{ matrix.os }}
