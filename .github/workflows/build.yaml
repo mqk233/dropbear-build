@@ -1,23 +1,52 @@
-name: Test
+name: Build with debian
 on:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        type: string
+        required: true
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    container:
+      image: debian:13
+      env:
+        LANG: C.UTF-8
     strategy:
       matrix:
         include:
-          - os: "windows-11-arm"
-          - os: "windows-2022"
-          - os: "windows-2025"
+          - os: "ubuntu-24.04"
+          - os: "ubuntu-24.04-arm"
+    env:
+      OPENSSL_VERSION: "3.5.5"
+      OPENSSL_PREFIX: "/usr/local/openssl"
     steps:
-      - name: Test
+      - name: Build openssl
         run: |
-          # 1. 定义 Chrome 可执行文件的完整路径
-          $chromePath = "C:\Program Files\Google\Chrome\Application\chrome.exe"  
-          # 2. 运行 Chrome 
-          # --headless: 无界面运行
-          # --disable-gpu: 禁用 GPU 加速（CI 环境必备）
-          # --dump-dom: 核心参数，渲染后输出完整的 DOM 内容
-          # --no-sandbox: 避免在容器环境中出现权限问题
-          & $chromePath --headless --disable-gpu --dump-dom --no-sandbox "https://api.cloudflare.com/cdn-cgi/trace"
+          apt-get update
+          apt-get upgrade -y
+          apt-get install -y curl build-essential pkg-config git
+          curl -sSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz | tar -zx
+          cd ./openssl-$OPENSSL_VERSION
+          if [ "$(uname -m)" = "aarch64" ]; then
+              ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX -mno-outline-atomics '-Wl,-rpath,$(LIBRPATH)'
+          else
+              ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX '-Wl,-rpath,$(LIBRPATH)'
+          fi
+          make -j$(nproc) && make install_sw
+      - name: Build smartdns
+        run: |
+          mkdir ./releases
+          export CFLAGS="-I$OPENSSL_PREFIX/include"
+          export LDFLAGS="-L$OPENSSL_PREFIX/lib -L$OPENSSL_PREFIX/lib64"
+          rm -rf ./smartdns && git clone --depth=1 https://github.com/pymumu/smartdns.git
+          sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture)
+          strip ./smartdns/src/smartdns && mv ./smartdns/src/smartdns ./releases/smartdns-$(dpkg --print-architecture)
+          rm -rf ./smartdns && git clone --depth=1 https://github.com/pymumu/smartdns.git
+          sh ./smartdns/package/build-pkg.sh --platform linux --arch $(dpkg --print-architecture) --static
+          strip ./smartdns/src/smartdns && mv ./smartdns/src/smartdns ./releases/smartdns-static-$(dpkg --print-architecture)
+      - name: Upload files to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ github.workspace }}/releases/*
+          tag_name: ${{ github.event.inputs.release_tag }}
