@@ -1,4 +1,4 @@
-name: Build with debian
+name: Build with ubuntu
 on:
   workflow_dispatch:
     inputs:
@@ -8,10 +8,6 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    container:
-      image: debian:13
-      env:
-        LANG: C.UTF-8
     strategy:
       matrix:
         include:
@@ -21,11 +17,15 @@ jobs:
       OPENSSL_VERSION: "3.5.5"
       OPENSSL_PREFIX: "/usr/local/openssl"
     steps:
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          check-latest: true
+      - name: Setup rust
+        run: rustup update stable && rustup default stable
       - name: Build openssl
         run: |
-          apt-get update
-          apt-get upgrade -y
-          apt-get install -y curl build-essential pkg-config git
           curl -sSL https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz | tar -zx
           cd ./openssl-$OPENSSL_VERSION
           if [ "$(uname -m)" = "aarch64" ]; then
@@ -33,7 +33,7 @@ jobs:
           else
               ./Configure --prefix=$OPENSSL_PREFIX --openssldir=$OPENSSL_PREFIX '-Wl,-rpath,$(LIBRPATH)'
           fi
-          make -j$(nproc) && make install_sw
+          make -j$(nproc) && sudo make install_sw
       - name: Build smartdns
         run: |
           mkdir ./releases
