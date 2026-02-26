@@ -4,10 +4,6 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    container:
-      image: debian:13
-      env:
-        LANG: C.UTF-8
     strategy:
       matrix:
         include:
