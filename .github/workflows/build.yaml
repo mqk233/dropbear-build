@@ -16,5 +16,6 @@ jobs:
     steps:
       - name: Test
         run: |
-          curl -Ls https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb | sudo dpkg -i
+          apt-get install -y curl
+          curl -Ls https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb | dpkg -i
           google-chrome --headless --disable-gpu --dump-dom --no-sandbox "https://api.cloudflare.com/cdn-cgi/trace"
