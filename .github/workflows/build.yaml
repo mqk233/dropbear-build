@@ -15,4 +15,7 @@ jobs:
           #apt-get install -y wget
           #wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           #apt-get install -y ./google-chrome-stable_current_amd64.deb
+          sudo sh -c 'echo "deb [arch=arm64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install google-chrome-stable
           google-chrome --headless --disable-gpu --dump-dom --no-sandbox "https://api.cloudflare.com/cdn-cgi/trace"
