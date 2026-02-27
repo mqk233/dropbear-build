@@ -4,19 +4,15 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    container:
-      image: debian:13
-      env:
-        LANG: C.UTF-8
     strategy:
       matrix:
         include:
-          - os: "ubuntu-24.04"
+          - os: "ubuntu-24.04-arm"
     steps:
       - name: Test
         run: |
-          apt-get update
-          apt-get install -y wget
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          apt-get install -y ./google-chrome-stable_current_amd64.deb
+          #apt-get update
+          #apt-get install -y wget
+          #wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          #apt-get install -y ./google-chrome-stable_current_amd64.deb
           google-chrome --headless --disable-gpu --dump-dom --no-sandbox "https://api.cloudflare.com/cdn-cgi/trace"
