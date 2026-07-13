@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Test
         run: |
-          curl -LO https://github.com/SagerNet/sing-box/releases/download/v1.13.14/sing-box-1.13.14-linux-arm64.tar.gz
-          tar -zxf sing-box-1.13.14-linux-arm64.tar.gz
-          ./sing-box-1.13.14-linux-arm64/sing-box ech-keypair s3.amazonaws.com >ech.pem
+          curl -LO https://github.com/SagerNet/sing-box/releases/download/v1.14.0-alpha.43/sing-box-1.14.0-alpha.43-linux-arm64.tar.gz
+          tar -zxf sing-box-1.14.0-alpha.43-linux-arm64.tar.gz
+          ./sing-box-1.14.0-alpha.43-linux-arm64/sing-box ech-keypair s3.amazonaws.com >ech.pem
           cat ./ech.pem
