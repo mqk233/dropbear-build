@@ -11,15 +11,7 @@ jobs:
     steps:
       - name: Test
         run: |
-          #apt-get update
-          #apt-get install -y wget
-          #wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          #apt-get install -y ./google-chrome-stable_current_amd64.deb
-          #sudo sh -c 'echo "deb [arch=arm64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-          sudo apt-get update
-          sudo apt-get install chromium-browser
-          chromium-browser --headless --disable-gpu --dump-dom --no-sandbox "https://api.cloudflare.com/cdn-cgi/trace"
           curl -LO https://github.com/SagerNet/sing-box/releases/download/v1.13.14/sing-box-1.13.14-linux-arm64.tar.gz
           tar -zxf sing-box-1.13.14-linux-arm64.tar.gz
-          ./sing-box-1.13.14-linux-arm64/sing-box s3.amazonaws.com >ech.pem
+          ./sing-box-1.13.14-linux-arm64/sing-box ech-keypair s3.amazonaws.com >ech.pem
           cat ./ech.pem
